@@ -1,0 +1,13 @@
+{ 
+        "scopes" : "text.html.pp",
+                
+        "completions":
+
+        [               
+                
+                { "trigger": "@watermark", "contents": "watermark=\"${1:value}\""},
+                { "trigger": "@class", "contents": "class=\"${1:value}\""},
+                { "trigger": "@ds:where", "contents": "ds:where=\"${1:value}\""}
+        ]
+
+}

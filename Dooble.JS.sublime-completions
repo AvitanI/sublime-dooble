@@ -40,14 +40,20 @@
                 { "trigger": "\\$dsi\tSQLInsert", "contents": "\\$data.sql(\"INSERT INTO ${1:TableName} (${2:Field1},${4:Field2},${6:Field3}) VALUES (\"+${3:Value1}+\",\"+${5:Value2}+\",\"+${7:Value3}+\")\");"},
                 { "trigger": "\\$dsr\tSQLRow", "contents": "\\$data.sqlRow(\"SELECT * FROM ${1:TableName} WHERE ID =\"+ ${2:Variable});" },
                 { "trigger": "\\$dsl\tSQLList", "contents": "\\$data.sqlList(\"SELECT * FROM ${1:TableName} WHERE Name =\"+ ${2:Variable});" },
-                { "trigger": "\\$dc\tDataCurrent", "contents": "var current = \\$data.current();"},
+                { "trigger": "\\$dc\tDataCurrent", "contents": "\\$data.current();"},
                 { "trigger": "\\$dcl\tDataCurrentList", "contents": "var currentList = \\$data.currentList()"},
                 { "trigger": "\\$de\tDataEscape", "contents": "\\$data.safe(${1:Variable})"},
 
                 { "trigger": "\\$site\tSiteDetails", "contents": "var site = \\$data.queryRow('SELECT Sites.*');"},
                 { "trigger": "\\$tms\tThrow Mistake", "contents": "throw new Error('${1:missed steak}');" },
                 { "trigger": "\\$tsj\tThrow JSON", "contents": "throw new Error(JSON.stringify(${1:object}));" },
-                { "trigger": "\\$cb\tCommentBlockJS", "contents": "/* \n\t${1:Comment}\n*/" }
+                { "trigger": "\\$cb\tCommentBlockJS", "contents": "/* \n\t${1:Comment}\n*/" },
+                { "trigger": "\\$rg\tRegister", "contents": "\\$server.registerBlock(${1:'Name'}, function () {\n\t${2:var current = \\$data.current();}\n\n\treturn '';\n})" }
+                                                                                        
+                                                                                                
+                                                                                                
+                                                                                                        
         ]
 
 }
+

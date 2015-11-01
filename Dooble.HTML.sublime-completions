@@ -4,7 +4,6 @@
         "completions":
 
         [               
-
                 { "trigger": "@bb\tSJSBlock", "contents": "@{\n\t${1:code}\n''}@"},
                 { "trigger": "@bil\tSJSInLine", "contents": "@{${1:code}}@" },
                 { "trigger": "@form\tForm", "contents": "[[\\$Form]]\n\t${1:form}\n[[\\$EndForm]]" },
@@ -13,7 +12,7 @@
                 { "trigger": "@ifelse\tBEIfElse", "contents": "@if(${1:Expression})\n\t${2:code}\n@else\n\t${3:code}\n@endif" },
                 { "trigger": "@loop\tBEForLoop", "contents": "@loop(var ${1:i} = 0;${1:i}<${2:array.length};${1:i}++)\n\t${3:code}\n@endloop" },
                 { "trigger": "@isjs\tImportSJS", "contents": "[[\\$SJS src='/SJS/${1:FileName}.js']]" },
-                { "trigger": "@icss\tImportCSS", "contents": "[[\\$css src='/Content/Styles/${1:FileName}.js']]" },
+                { "trigger": "@icss\tImportCSS", "contents": "[[\\$css src='/Content/Styles/${1:FileName}.css']]" },
                 { "trigger": "@ijs\tImportJS", "contents": "[[\\$script src='/content/js/${1:FileName}.js']]" },
                 { "trigger": "@rc\tRowCount", "contents": "[[\\$RowCount]]" },
                 { "trigger": "@rn\tRowNumber", "contents": "[[\\$RowNumber]]" },
@@ -36,7 +35,8 @@
                 { "trigger": "@deb\tDebugger", "contents": "debugger;" },
                 { "trigger": "@cl\tConsoleLog", "contents": "console.log(${1:object});" },
                 { "trigger": "@cll\tConsoleLogItem", "contents": "console.log(${1:object},${1:object});" },
-                { "trigger": "@cb\tCommentBlock", "contents": "--[\n\t${1:Comment}\n]--" }
+                { "trigger": "@cb\tCommentBlock", "contents": "--[\n\t${1:Comment}\n]--" },
+                { "trigger": "@qe\tQuery", "contents": "[[\\$query sql='SELECT ${1:Field1} FROM ${2:TableName} WHERE ${3:condition}']]" }
         ]
 
 }
