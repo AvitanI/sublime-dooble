@@ -307,7 +307,7 @@ class GoToModuleCommand(sublime_plugin.WindowCommand):
 				# open the quick panel
 				self.window.show_quick_panel(panel_list, self.on_done, sublime.MONOSPACE_FONT)
 		else:
-			sublime.error_message("File not found")
+			sublime.message_dialog("File not found")
 
 			
 	def on_done(self, result):
