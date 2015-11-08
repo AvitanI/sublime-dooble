@@ -41,14 +41,14 @@
                 { "trigger": "\\$dsr\tSQLRow", "contents": "\\$data.sqlRow(\"SELECT * FROM ${1:TableName} WHERE ID =\"+ ${2:Variable});" },
                 { "trigger": "\\$dsl\tSQLList", "contents": "\\$data.sqlList(\"SELECT * FROM ${1:TableName} WHERE Name =\"+ ${2:Variable});" },
                 { "trigger": "\\$dc\tDataCurrent", "contents": "\\$data.current();"},
-                { "trigger": "\\$dcl\tDataCurrentList", "contents": "var currentList = \\$data.currentList()"},
+                { "trigger": "\\$dcl\tDataCurrentList", "contents": "\\$data.currentList()"},
                 { "trigger": "\\$de\tDataEscape", "contents": "\\$data.safe(${1:Variable})"},
 
-                { "trigger": "\\$site\tSiteDetails", "contents": "var site = \\$data.queryRow('SELECT Sites.*');"},
+                { "trigger": "\\$site\tSiteDetails", "contents": "\\$data.queryRow('SELECT Sites.*');"},
                 { "trigger": "\\$tms\tThrow Mistake", "contents": "throw new Error('${1:missed steak}');" },
                 { "trigger": "\\$tsj\tThrow JSON", "contents": "throw new Error(JSON.stringify(${1:object}));" },
                 { "trigger": "\\$cb\tCommentBlockJS", "contents": "/* \n\t${1:Comment}\n*/" },
-                { "trigger": "\\$rg\tRegister", "contents": "\\$server.registerBlock(${1:'Name'}, function () {\n\t${2:var current = \\$data.current();}\n\n\treturn '';\n})" }
+                { "trigger": "\\$rg\tRegister", "contents": "\\$server.registerBlock(${1:'Name'}, function () {\n\t${2:\\$data.current();}\n\n\treturn '';\n})" }
                                                                                         
                                                                                                 
                                                                                                 

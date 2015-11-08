@@ -6,7 +6,7 @@
         "caption": "Create New Item",
         "command": "add_item",
         "args": {
-          "files": []
+          "files": [], "paths": []
         }
       },
       {
@@ -20,14 +20,14 @@
         "caption": "Create New Config",
         "command": "add_config",
         "args": {
-          "files": []
+          "files": [], "paths": []
         }
       },
       {
         "caption": "Go To Config",
         "command": "go_to_config",
         "args": {
-          "files": []
+          "files": [], "paths": []
         }
       }
     ]

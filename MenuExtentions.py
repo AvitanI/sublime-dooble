@@ -1,6 +1,7 @@
 import sublime, sublime_plugin
 import re
 import os
+import ntpath
 #TODO: concentrate filepath in same class
 #TODO: why check ftp permissions fall sometimes
 class DoobleIO():
@@ -56,7 +57,7 @@ class DoobleIO():
 
 		return filePath
 		
-	#---------------------------------------------------------------------------------------------------------------
+	
 	@staticmethod
 	def get_master_path(file_name, result):
 		left_path, file_name = DoobleIO.cut_path(file_name)
@@ -75,7 +76,7 @@ class DoobleIO():
 				break
 			root += i + '\\'
 		root += const_path + result
-		print(left_path + root)
+		# print(left_path + root)
 		return left_path + root
 
 	@staticmethod
@@ -100,7 +101,7 @@ class DoobleIO():
 				break
 			root += lis[i] + '\\'
 		root += const_path + result
-		print(left_path + root)
+		# print(left_path + root)
 		return left_path + root
 
 
@@ -150,8 +151,15 @@ class DoobleIO():
 
 		return(left_path, right_path)
 
+	@staticmethod
+	def is_folder(path):
+		if os.path.isdir(path):
+			return True
+		return False
+
+
 class AddItemCommand(sublime_plugin.WindowCommand):
-	def run(self, files):
+	def run(self, files=[], paths=[]):
 		if not files:
 			files.append(sublime.active_window().active_view().file_name())
 		# get file path
@@ -162,7 +170,11 @@ class AddItemCommand(sublime_plugin.WindowCommand):
 		#goes to new file
 		sublime.active_window().open_file(filePath)
 
-	def is_visible(self,files):
+	def is_visible(self, files=[], paths=[]):
+		# check if it's folder
+		if len(paths) == 1:
+			if DoobleIO.is_folder(paths[0]):
+				return False
 		if not files:
 			files.append(sublime.active_window().active_view().file_name())
 		if(len(files) > 1):
@@ -228,10 +240,27 @@ class GoToMasterCommand(sublime_plugin.WindowCommand):
 
 class AddConfigCommand(sublime_plugin.WindowCommand):
 
-	def run(self, files):
+	def run(self, files=[], paths=[]):
+		# In case it's a folder
+		if len(paths) == 1:
+			a_dir = paths[0]
+			if DoobleIO.is_folder(a_dir):
+				file_name = a_dir + '\\$.config'
+				# if os.path.isfile(file_name):
+				# 	sublime.active_window().open_file(file_name)
+				# else:
+				# 	# if the file does not exist, create one.
+				# 	open(file_name, 'a')
+				# 	sublime.active_window().open_file(file_name)
+				if not os.path.isfile(file_name):
+					open(file_name, 'a')
+					sublime.active_window().open_file(file_name)
+				
+			
+
 		if not files:
 			files.append(sublime.active_window().active_view().file_name())
-		#gets the file path
+		#get the file path
 		filePath = DoobleIO.getConfigPath(files)
 
 		folder = os.path.dirname(filePath)
@@ -244,14 +273,20 @@ class AddConfigCommand(sublime_plugin.WindowCommand):
    				sublime.error_message('There\'s a problem with the file manager. the file may already exist or Expendrive should be restarted.')
 
 
-	def is_visible(self,files):
+	def is_visible(self, files=[], paths=[]):
+		# In case it's a folder
+		if len(paths) == 1:
+			if DoobleIO.is_folder(paths[0]):
+				if os.path.isfile(paths[0] + '\\$.config'):
+					return False
+		# In case the files list is empty
 		if not files:
 			files.append(sublime.active_window().active_view().file_name())
-
-		# file = 
+		# In case the user make multiply selections
 		if(len(files) > 1):
 			return False
-		if("config" in files[0].lower()) :
+		
+		if("config" in files[0].lower()):
 			return False
 
 		filePath = DoobleIO.getConfigPath(files)
@@ -259,8 +294,15 @@ class AddConfigCommand(sublime_plugin.WindowCommand):
 			return False
 		return True
 
+
 class GoToConfigCommand(sublime_plugin.WindowCommand):
-	def run(self, files):
+	def run(self, files=[], paths=[]):
+		if len(paths) == 1:
+			if DoobleIO.is_folder(paths[0]):
+				file_name = paths[0] + '\\$.config'
+				if (os.path.isfile(file_name)):
+					sublime.active_window().open_file(file_name)
+
 		if not files:
 			files.append(sublime.active_window().active_view().file_name())
 
@@ -268,7 +310,13 @@ class GoToConfigCommand(sublime_plugin.WindowCommand):
 		sublime.active_window().open_file(filePath)
 
 
-	def is_visible(self,files):
+	def is_visible(self, files=[], paths=[]):
+		# In case it's a folder
+		if len(paths) == 1:
+			if DoobleIO.is_folder(paths[0]):
+				if (os.path.isfile(paths[0] + '\\$.config')):
+					return True
+
 		if not files:
 			files.append(sublime.active_window().active_view().file_name())
 		if(len(files) > 1):
@@ -283,7 +331,7 @@ class GoToConfigCommand(sublime_plugin.WindowCommand):
 
 		return True
 		
-#-----------------------------------------------------------------------------------------------------------------------	
+
 class GoToModuleCommand(sublime_plugin.WindowCommand):
 
 	# [[Module/template]] or [[Module/template attr=""]]
@@ -307,7 +355,7 @@ class GoToModuleCommand(sublime_plugin.WindowCommand):
 				# open the quick panel
 				self.window.show_quick_panel(panel_list, self.on_done, sublime.MONOSPACE_FONT)
 		else:
-			sublime.error_message("File not found")
+			sublime.message_dialog("File not found")
 
 			
 	def on_done(self, result):
