@@ -335,7 +335,7 @@ class GoToConfigCommand(sublime_plugin.WindowCommand):
 class GoToModuleCommand(sublime_plugin.WindowCommand):
 
 	# [[Module/template]] or [[Module/template attr=""]]
-	REGEX = r"\[\[(\w+/\w+).*((.|\n)*)\]\]"
+	REGEX = r".*\[\[(\w+/\w+).*((.|\n)*)\]\].*"
 
 	def run(self):
 		# start the program
@@ -402,8 +402,6 @@ class GoToModuleCommand(sublime_plugin.WindowCommand):
 		if search_result:
 			if DoobleIO.is_ui_controls(search_result):
 				search_result = 'uicontrols\\' + search_result.split('/')[1]
-			elif 'module' in file_name:
-				search_result = 'modules\\' + search_result
 			elif 'admin' in file_name:
 				search_result = 'admin\\' + search_result
 			elif 'content' in file_name:
@@ -455,7 +453,7 @@ class GoToModuleCommand(sublime_plugin.WindowCommand):
 		return view.substr(get_line).strip()
 
 	def match_selection(self, sel):
-		# print("sel: " + sel)
+		print("sel: " + sel)
 		try:
 			# do match with the selected exp
 			search_result = re.match(self.REGEX, sel).group(1)
