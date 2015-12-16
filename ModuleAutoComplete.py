@@ -56,10 +56,10 @@ class DoobleIO():
 
 		if DoobleIO.is_module(file_name) or DoobleIO.is_content(file_name):
 			a_type = '\\Content\\Modules'
-			print("im module file or in content folder")
+			print("module file or content folder")
 		elif DoobleIO.is_admin(file_name):
 			a_type = '\\Admin'
-			print("im admin file")
+			print("admin file")
 		return a_type
 
 
@@ -105,13 +105,36 @@ class ModuleAutoCompleteCommand(sublime_plugin.EventListener):
 			# print("full path: " + fullPath)
 			# in case its ui
 			if is_ui:
-				# print(x + '\\uicontrols')
-				modulesList = self.get_ui_files(x + '\\uicontrols')
+				print(x + '\\uicontrols')
+				try:
+					# get ui list
+					ui_list = self.get_ui_files(x + '\\uicontrols')
+					# remove duplicate from list
+					ui_list = self.remove_duplicates(modulesList, ui_list)
+
+					modulesList += ui_list
+				except:
+					print("There is no ui controls folder in the site or the master")
+				
 			else:
-				ui_controls_list = self.get_ui_files(x + '\\uicontrols')
-				modulesList = self.get_modules(fullPath) + ui_controls_list
+				ui_list  = []
+				try:
+					# get ui list
+					ui_list = self.get_ui_files(x + '\\uicontrols')
+					# remove duplicate from list
+					ui_list = self.remove_duplicates(modulesList, ui_list)
+				except:
+					print("There is no ui controls folder in the site or the master")
+
+				# get module list
+				module_list = self.get_modules(fullPath)
+				# remove duplicate from module list
+				module_list = self.remove_duplicates(modulesList, module_list)
+
+				modulesList += module_list + ui_list
 		
 		return modulesList
+
 	def get_immediate_subdirectories(self, a_dir):
     		return [a_dir+'\\'+name for name in os.listdir(a_dir)
             if os.path.isdir(os.path.join(a_dir, name))]
@@ -124,8 +147,12 @@ class ModuleAutoCompleteCommand(sublime_plugin.EventListener):
 				for fileName in os.listdir(fullPath+'\\'+dir):
 					# print("file name: " + fileName)
 					mPath = ""
-					if fileName != '$.config':
+					# if fileName != '$.config' and '.config' not in fileName:
+					if  '.html' in fileName or \
+						'.htm' in fileName or \
+						'.hpp' in fileName:
 						mPath = dir+'/'+os.path.splitext(fileName)[0]
+						# print("mpath: " + mPath)
 					if '.' not in mPath and mPath != "":
 						# print([mPath,mPath])
 						modulesList.append([mPath,mPath])
@@ -148,4 +175,12 @@ class ModuleAutoCompleteCommand(sublime_plugin.EventListener):
 			mPath = 'ui/' + os.path.splitext(fileName)[0]
 			modulesList.append([mPath,mPath])
 		return modulesList
+
+	def remove_duplicates(self, modulesList, lis):
+		result = []
+		for item in lis:
+			if item not in modulesList:
+				result.append(item)
+		return result
+
 
